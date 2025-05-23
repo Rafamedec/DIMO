@@ -156,25 +156,28 @@
       <h5 class="mb-4">Faça login em sua conta DIMO</h5>
 
       <form action="login" method="post">
+        <!-- Campo Email -->
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
           <div class="input-group">
-            <input type="email" class="form-control" id="email" placeholder="nome@email.com" name="email">
-            <span class="input-group-text icon-orange">
-                                <i class="fas fa-envelope"></i>
-                            </span>
+            <input type="email" class="form-control" id="email" name="email" placeholder="nome@email.com" required>
+            <span class="input-group-text">
+              <i class="fas fa-envelope"></i>
+            </span>
           </div>
         </div>
 
+        <!-- Campo Senha -->
         <div class="mb-3">
-          <label for="password" class="form-label">Senha</label>
+          <label for="senha" class="form-label">Senha</label>
           <div class="input-group">
-            <input type="password" class="form-control" id="password" placeholder="Insira sua senha" name="senha">
-            <span class="input-group-text icon-orange">
-                                <i class="fas fa-lock"></i>
-                            </span>
+            <input type="password" class="form-control" id="senha" name="senha" placeholder="Insira sua senha" required>
+            <span class="input-group-text" onclick="togglePassword()">
+              <i class="fas fa-eye" id="toggleIcon"></i>
+            </span>
           </div>
         </div>
+
 
         <c:if test="${tentativa}">
         <span class="navbar-text text-danger" style="margin-right:10px">
@@ -191,7 +194,8 @@
           <span>OU</span>
         </div>
 
-        <button type="button" class="signup-btn">Cadastre-se</button>
+        <a href="cadastro.jsp" class="signup-btn btn">Cadastre-se</a>
+
       </form>
     </div>
 

@@ -15,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -88,12 +89,16 @@ public class TransacaoServlet extends HttpServlet {
             Tipo tipo = new Tipo();
             tipo.setCodigo(codigoTipo);
 
+            HttpSession session = req.getSession();
+            String user = (String) session.getAttribute("user");
+
             Transacao transacao = new Transacao(
                     0,
                     preco,
                     categoria,
                     tipo,
-                    data
+                    data,
+                    user
             );
 
             transacao.setCategoria(categoria);
@@ -152,6 +157,9 @@ public class TransacaoServlet extends HttpServlet {
 
         String acao = req.getParameter("acao");
 
+        HttpSession session = req.getSession();
+        String user = (String) session.getAttribute("user");
+
         switch (acao) {
             case "listar":
                 listar(req, resp);
@@ -184,7 +192,11 @@ public class TransacaoServlet extends HttpServlet {
 
     private void abrirForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("codigo"));
-        Transacao transacao = dao.buscar(id);
+
+        HttpSession session = req.getSession();
+        String user = (String) session.getAttribute("user");
+
+        Transacao transacao = dao.buscar(id, user);
         req.setAttribute("transacao", transacao);
         carregarOpcoesCategoria(req);
         carregarOpcoesTipo(req);
@@ -193,7 +205,10 @@ public class TransacaoServlet extends HttpServlet {
     }
 
     private void listar(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Transacao> lista = dao.listar();
+        HttpSession session = req.getSession();
+        String user = (String) session.getAttribute("user");
+
+        List<Transacao> lista = dao.listar(user);
 
         double totalEntrada = 0;
         double totalSaida = 0;

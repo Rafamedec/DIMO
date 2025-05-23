@@ -5,5 +5,6 @@ import br.com.fiap.finyou.model.Usuario;
 public interface UsuarioDao {
 
     boolean validarUsuario(Usuario usuario);
+    boolean cadastrarUsuario(Usuario usuario);
 
 }

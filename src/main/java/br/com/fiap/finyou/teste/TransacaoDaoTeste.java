@@ -42,7 +42,8 @@ public class TransacaoDaoTeste {
                     77.49,                       // valor
                     categoria,                   // categoria
                     tipo,                        // tipo
-                    LocalDate.of(2024, 10, 21)   // data
+                    LocalDate.of(2024, 10, 21),   // data
+                    "email@email.com" // email usuario
             );
 
             try {
@@ -53,7 +54,7 @@ public class TransacaoDaoTeste {
             }
 
             // Buscar e atualizar uma transação
-            Transacao transacaoBuscada = dao.buscar(1);
+            Transacao transacaoBuscada = dao.buscar(1, "email@email.com");
             if (transacaoBuscada != null) {
                 transacaoBuscada.setValor(891.99);
                 try {
@@ -67,7 +68,7 @@ public class TransacaoDaoTeste {
             }
 
             // Listar todas as transações
-            List<Transacao> lista = dao.listar();
+            List<Transacao> lista = dao.listar("email@email.com");
             System.out.println("Lista de transações:");
             for (Transacao item : lista) {
                 System.out.println(

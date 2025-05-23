@@ -26,14 +26,15 @@ public class OracleTransacaoDao implements TransacaoDao {
 
             String sql = "INSERT INTO TB_TRANSACAO " +
                     "(COD_TRANSACAO, " +
-                    "VALOR_TRANSACAO, DATA_TRANSACAO, COD_CATEGORIA, COD_TIPO) " +
-                    "VALUES (SQ_TB_TRANSACAO.NEXTVAL, ?, ?, ?, ?)";
+                    "VALOR_TRANSACAO, DATA_TRANSACAO, COD_CATEGORIA, COD_TIPO, DS_EMAIL) " +
+                    "VALUES (SQ_TB_TRANSACAO.NEXTVAL, ?, ?, ?, ?, ?)";
 
             stmt = conexao.prepareStatement(sql);
             stmt.setDouble(1, transacao.getValor());
             stmt.setDate(2, Date.valueOf(transacao.getData()));
             stmt.setInt(3, transacao.getCategoria().getCodigo());
             stmt.setInt(4, transacao.getTipo().getCodigo());
+            stmt.setString(5, transacao.getEmailUsuario());
             stmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -113,7 +114,7 @@ public class OracleTransacaoDao implements TransacaoDao {
     }
 
     @Override
-    public Transacao buscar(int id) {
+    public Transacao buscar(int id, String emailUsuario) {
 
         Transacao transacao = null;
         PreparedStatement stmt = null;
@@ -126,9 +127,11 @@ public class OracleTransacaoDao implements TransacaoDao {
                     "ON TB_TRANSACAO.COD_CATEGORIA = TB_CATEGORIA.COD_CATEGORIA " +
                     "INNER JOIN TB_TIPO " +
                     "ON TB_TRANSACAO.COD_TIPO = TB_TIPO.COD_TIPO " +
-                    "WHERE TB_TRANSACAO.COD_TRANSACAO = ?";
+                    "WHERE TB_TRANSACAO.COD_TRANSACAO = ?" +
+                    "AND TB_TRANSACAO.DS_EMAIL = ?";
             stmt = conexao.prepareStatement(sql);
             stmt.setInt(1, id);
+            stmt.setString(2, emailUsuario);
             rs = stmt.executeQuery();
 
             if (rs.next()){
@@ -151,7 +154,7 @@ public class OracleTransacaoDao implements TransacaoDao {
                 );
 
                 transacao = new Transacao(
-                        codigo, valor, categoria, tipo, data
+                        codigo, valor, categoria, tipo, data, emailUsuario
                 );
                 transacao.setCategoria(categoria);
                 transacao.setTipo(tipo);
@@ -172,7 +175,7 @@ public class OracleTransacaoDao implements TransacaoDao {
     }
 
     @Override
-    public List<Transacao> listar() {
+    public List<Transacao> listar(String emailUsuario) {
 
         List<Transacao> lista = new ArrayList<Transacao>();
         PreparedStatement stmt = null;
@@ -184,8 +187,10 @@ public class OracleTransacaoDao implements TransacaoDao {
                     "INNER JOIN TB_CATEGORIA " +
                     "ON TB_TRANSACAO.COD_CATEGORIA = TB_CATEGORIA.COD_CATEGORIA " +
                     "INNER JOIN TB_TIPO " +
-                    "ON TB_TRANSACAO.COD_TIPO = TB_TIPO.COD_TIPO";
+                    "ON TB_TRANSACAO.COD_TIPO = TB_TIPO.COD_TIPO " +
+                    "WHERE TB_TRANSACAO.DS_EMAIL = ?";
             stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, emailUsuario);
             rs = stmt.executeQuery();
 
             //Percorre todos os registros encontrados
@@ -209,7 +214,7 @@ public class OracleTransacaoDao implements TransacaoDao {
                 );
 
                 Transacao transacao = new Transacao(
-                        codigo, valor, categoria, tipo, data
+                        codigo, valor, categoria, tipo, data, emailUsuario
                 );
                 transacao.setCategoria(categoria);
                 transacao.setTipo(tipo);

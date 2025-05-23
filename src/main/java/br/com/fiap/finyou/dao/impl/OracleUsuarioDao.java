@@ -30,21 +30,52 @@ public class OracleUsuarioDao implements UsuarioDao {
             stmt.setString(2, usuario.getSenha());
             rs = stmt.executeQuery();
 
-            if (rs.next()){
+            if (rs.next()) {
                 return true;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
-                stmt.close();
-                rs.close();
-                conexao.close();
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+                if (conexao != null) conexao.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return false;
     }
+
+    @Override
+    public boolean cadastrarUsuario(Usuario usuario) {
+        PreparedStatement stmt = null;
+        try {
+            conexao = ConnectionManager.getInstance().getConnection();
+
+            String sql = "INSERT INTO TB_USUARIO (DS_EMAIL, DS_SENHA) VALUES (?, ?)";
+
+            stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, usuario.getEmail());
+            stmt.setString(2, usuario.getSenha());
+
+            int linhasAfetadas = stmt.executeUpdate();
+
+            return linhasAfetadas > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (conexao != null) conexao.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
 }
+

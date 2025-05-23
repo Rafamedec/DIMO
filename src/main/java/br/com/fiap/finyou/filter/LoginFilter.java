@@ -19,10 +19,17 @@ public class LoginFilter implements Filter {
         HttpSession session = req.getSession();
         String url = req.getRequestURI();
 
-        if (session.getAttribute("user") == null && !url.endsWith("login") && !url.contains("resources") && !url.contains("home")) {
+        if (session.getAttribute("user") == null &&
+                !url.endsWith("login") &&
+                !url.contains("resources") &&
+                !url.contains("home") &&
+                !url.contains("cadastrar") &&
+                !url.contains("cadastro")) {
+
             request.setAttribute("erro", "Entre com o usuário e senha!");
             request.getRequestDispatcher("home.jsp").forward(request, resp);
-        }else {
+
+        } else {
             chain.doFilter(request, resp);
         }
 

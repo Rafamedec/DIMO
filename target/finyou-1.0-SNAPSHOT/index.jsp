@@ -13,29 +13,6 @@
             font-family: Arial, sans-serif;
         }
 
-        .main-container {
-            max-width: 700px;
-            margin: 40px auto;
-            border-radius: 15px;
-            overflow: hidden;
-            border: 2px solid #192c78;
-        }
-
-        .header {
-            background-color: white;
-            padding: 15px 20px;
-            border-bottom: 2px solid #192c78;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #192c78;
-        }
-
         .logo span {
             color: #ff6b00;
         }

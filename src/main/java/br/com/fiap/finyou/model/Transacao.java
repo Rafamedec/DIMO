@@ -9,8 +9,18 @@ public class Transacao {
     private LocalDate data;
     private Categoria categoria;
     private Tipo tipo;
+    private String emailUsuario;
 
     // Constructor for new transactions
+    public Transacao(int codigo, double valor, Categoria categoria, Tipo tipo, LocalDate data, String emailUsuario) {
+        this.codigo = codigo;
+        this.valor = valor;
+        this.categoria = categoria;
+        this.tipo = tipo;
+        this.data = data;
+        this.emailUsuario = emailUsuario;
+    }
+
     public Transacao(int codigo, double valor, Categoria categoria, Tipo tipo, LocalDate data) {
         this.codigo = codigo;
         this.valor = valor;
@@ -61,6 +71,10 @@ public class Transacao {
 
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
+    }
+
+    public String getEmailUsuario() {
+        return emailUsuario;
     }
 
     @Override

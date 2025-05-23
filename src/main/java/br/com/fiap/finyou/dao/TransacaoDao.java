@@ -10,7 +10,6 @@ public interface TransacaoDao {
     void cadastrar(Transacao transacao) throws DBException;
     void atualizar(Transacao transacao) throws DBException;
     void remover(int codigo) throws DBException;
-    Transacao buscar(int id);
-    List<Transacao> listar();
-
+    Transacao buscar(int id, String emailUsuario);
+    List<Transacao> listar(String emailUsuario);
 }
